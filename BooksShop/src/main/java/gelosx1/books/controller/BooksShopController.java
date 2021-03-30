@@ -28,7 +28,7 @@ public class BooksShopController {
 		
 	}
 	
-	@GetMapping("/{isbn}")
+	@GetMapping("/id/{isbn}")
 	public BookDto findBook(@PathVariable String isbn) {
 		return bookService.findBookByIsbn(isbn);
 		

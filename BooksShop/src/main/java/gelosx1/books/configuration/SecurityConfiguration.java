@@ -1,13 +1,21 @@
 package gelosx1.books.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
+import gelosx1.books.accounting.jwt.JwtConfigurer;
+
+
+
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
+	
+	@Autowired
+	JwtConfigurer jwtConfigurer;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -16,13 +24,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		http.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.authorizeRequests()
-			.antMatchers(HttpMethod.GET,"/book/{isbn}").permitAll()
+			.antMatchers(HttpMethod.GET,"/book/id/{isbn}").permitAll()
 			.antMatchers(HttpMethod.GET,"/book/author/{author}").permitAll()
 			.antMatchers(HttpMethod.GET,"/book/publisher/{publisher}").permitAll()
-			.antMatchers("/book").authenticated()
-			.antMatchers("/book").hasRole("ADMIN")
-			.antMatchers("/book/{isbn}/title/{title}").hasRole("ADMIN")
-			.antMatchers("/book/{isbn}").hasRole("ADMIN");;
+			//.antMatchers("/book")
+			//.authenticated()
+			.antMatchers("/book")
+			.hasRole("ADMIN")
+			//.access("@customSecurity.checkAuthorityForPost(#id, authentication)")
+			.antMatchers("/book/{isbn}/title/{title}")
+			.hasRole("ADMIN")
+			//.access("@customSecurity.checkAuthorityForPost(#id, authentication)")
+			.antMatchers("/book/{isbn}")
+			.hasRole("ADMIN")
+			.anyRequest().authenticated()
+            .and()
+            .apply(jwtConfigurer);
+			
+			//.access("@customSecurity.checkAuthorityForPost(#id, authentication)");
 
 			
 	}

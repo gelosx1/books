@@ -1,5 +1,9 @@
 package gelosx1.books.accounting.dto;
 
-public class UserRegisterDto {
+import lombok.Getter;
 
+@Getter
+public class UserRegisterDto {
+	String name;
+	String password;
 }
