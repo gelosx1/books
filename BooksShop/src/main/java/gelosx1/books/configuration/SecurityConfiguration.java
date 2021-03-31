@@ -32,7 +32,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.antMatchers("/book").hasRole("ADMIN")
 			.antMatchers("/book/{isbn}/title/{title}").hasRole("ADMIN")
 			.antMatchers("/book/{isbn}").hasRole("ADMIN")
-			.anyRequest().authenticated()
             .and()
             .apply(jwtConfigurer);
 
