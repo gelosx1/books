@@ -33,15 +33,19 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		String endPoint = getStringFromPathVariable(request, "(?<=book)(.*)");
-			if (!"/registration".equals(endPoint) 
-					&& !"/login".equals(endPoint) 
-					&& !"/publisher".equals(endPoint)
-					&& !"/author".equals(endPoint)
-					&& !"/id".equals(endPoint)) {			
+		String endPoint = getStringFromPathVariable(request, "(?<=(book|account)\\/)(.*?)(?=\\/|$)");
+		System.out.println(endPoint);
+		
+			if (!"registration".equals(endPoint) 
+					&& !"login".equals(endPoint) 
+					&& !"publisher".equals(endPoint)
+					&& !"author".equals(endPoint)
+					&& !"id".equals(endPoint)) {			
 				String headerToken = request.getHeader(SecurityConstants.X_TOKEN_HEADER);
+				System.out.println("h="+headerToken);
 				if (headerToken != null && jwtTokenProvider.validateToken(headerToken, response)) {
 		            Authentication auth = jwtTokenProvider.getAuthentication(headerToken);
+		            System.out.println("n="+auth.getName());
 		            if (auth != null) {
 		                SecurityContextHolder.getContext().setAuthentication(auth);
 		                String Jwttoken =  jwtTokenProvider.createToken(auth.getName());
@@ -49,9 +53,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 		            }
 		            
 		        }				
-				filterChain.doFilter(request, response);
+			
 			}
-
+			filterChain.doFilter(request, response);
 		}
 
 	private String getStringFromPathVariable(HttpServletRequest request, String regex) {

@@ -27,21 +27,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.antMatchers(HttpMethod.GET,"/book/id/{isbn}").permitAll()
 			.antMatchers(HttpMethod.GET,"/book/author/{author}").permitAll()
 			.antMatchers(HttpMethod.GET,"/book/publisher/{publisher}").permitAll()
-			//.antMatchers("/book")
-			//.authenticated()
-			.antMatchers("/book")
-			.hasRole("ADMIN")
-			//.access("@customSecurity.checkAuthorityForPost(#id, authentication)")
-			.antMatchers("/book/{isbn}/title/{title}")
-			.hasRole("ADMIN")
-			//.access("@customSecurity.checkAuthorityForPost(#id, authentication)")
-			.antMatchers("/book/{isbn}")
-			.hasRole("ADMIN")
+			.antMatchers(HttpMethod.POST,"/account/registration").permitAll()
+			.antMatchers(HttpMethod.POST,"/account/login").permitAll()
+			.antMatchers("/book").hasRole("ADMIN")
+			.antMatchers("/book/{isbn}/title/{title}").hasRole("ADMIN")
+			.antMatchers("/book/{isbn}").hasRole("ADMIN")
 			.anyRequest().authenticated()
             .and()
             .apply(jwtConfigurer);
-			
-			//.access("@customSecurity.checkAuthorityForPost(#id, authentication)");
 
 			
 	}

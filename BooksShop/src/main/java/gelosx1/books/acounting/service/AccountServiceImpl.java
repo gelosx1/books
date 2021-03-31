@@ -1,5 +1,7 @@
 package gelosx1.books.acounting.service;
 
+import java.util.Set;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -14,10 +16,13 @@ import gelosx1.books.accounting.dto.UserRegisterDto;
 import gelosx1.books.accounting.jwt.JwtTokenProvider;
 import gelosx1.books.accounting.model.UserAccount;
 import gelosx1.books.accounting.model.UserRole;
+import gelosx1.books.dao.BookRepository;
 import gelosx1.books.dao.UserRepository;
+import gelosx1.books.exception.BookNotFoundException;
 import gelosx1.books.exception.UserAuthenticationException;
 import gelosx1.books.exception.UserExistsException;
 import gelosx1.books.exception.UserNotFoundException;
+import gelosx1.books.models.Book;
 
 @Service
 public class AccountServiceImpl implements AccountService{
@@ -30,6 +35,9 @@ public class AccountServiceImpl implements AccountService{
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	BookRepository bookRepository;
 
 	@Override
 	public UserProfileDto register(UserRegisterDto userRegisterDto) {
@@ -51,6 +59,31 @@ public class AccountServiceImpl implements AccountService{
 		UserAccount userAccount = checkUserAccount(token);
 		placeTokenToHeader(userAccount.getName(), response);
 		return userAccountToUserProfileDto(userAccount);
+	}
+	
+	@Override
+	public Set<String> purchaseBook(String name, String isbn) {
+		UserAccount userAccount = getUserAccount(name);
+		Book book = bookRepository.findById(isbn).orElseThrow(()-> 
+		new BookNotFoundException(isbn));
+		if (book != null) {
+			userAccount.purchaseBook(isbn);
+		}
+		userRepository.save(userAccount);
+		return userAccount.getPurchasedBooks();
+	}
+	
+	@Override
+	public Set<String> getPurchasedBooks(String name) {
+		UserAccount userAccount = getUserAccount(name);
+		Set<String> books = userAccount.getPurchasedBooks();
+		return books;
+	}
+
+
+	private UserAccount getUserAccount(String name) {
+		return userRepository.findById(name)
+				.orElseThrow(()->new UserNotFoundException(name));
 	}
 	
 	

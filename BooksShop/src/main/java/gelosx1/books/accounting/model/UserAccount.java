@@ -16,15 +16,15 @@ import lombok.Singular;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Builder
 @EqualsAndHashCode(of={"name"})
 @Document(collection = "users")
 public class UserAccount {
 	
-	@Setter @Id String name;	
-	@Setter String password;	
+	 @Id String name;	
+	 String password;	
 	
-	@Setter
 	@Singular
 	Set<UserRole> roles;
 	
@@ -34,6 +34,13 @@ public class UserAccount {
 
 	public boolean removeRole(UserRole role) {
 		return roles.remove(role);
+	}
+	
+	@Singular
+	Set<String> purchasedBooks;
+	
+	public boolean purchaseBook(String isbn) {
+		return purchasedBooks.add(isbn);
 	}
 
 }
