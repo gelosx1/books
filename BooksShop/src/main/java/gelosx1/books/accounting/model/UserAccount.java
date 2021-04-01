@@ -40,6 +40,7 @@ public class UserAccount {
 	Set<String> purchasedBooks;
 	
 	public boolean purchaseBook(String isbn) {
+		System.out.println("i="+isbn+" s="+purchasedBooks);
 		return purchasedBooks.add(isbn);
 	}
 

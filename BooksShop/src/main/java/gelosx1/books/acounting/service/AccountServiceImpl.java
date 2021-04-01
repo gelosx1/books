@@ -1,6 +1,8 @@
 package gelosx1.books.acounting.service;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,11 +20,13 @@ import gelosx1.books.accounting.model.UserAccount;
 import gelosx1.books.accounting.model.UserRole;
 import gelosx1.books.dao.BookRepository;
 import gelosx1.books.dao.UserRepository;
+import gelosx1.books.dto.BookDto;
 import gelosx1.books.exception.BookNotFoundException;
 import gelosx1.books.exception.UserAuthenticationException;
 import gelosx1.books.exception.UserExistsException;
 import gelosx1.books.exception.UserNotFoundException;
 import gelosx1.books.models.Book;
+import gelosx1.books.service.BookService;
 
 @Service
 public class AccountServiceImpl implements AccountService{
@@ -32,6 +36,9 @@ public class AccountServiceImpl implements AccountService{
 	
 	@Autowired
 	JwtTokenProvider jwtTokenProvider;
+	
+	@Autowired
+	BookService bookService;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -49,6 +56,7 @@ public class AccountServiceImpl implements AccountService{
 				.password(hashPassword)
 				.name(userRegisterDto.getName())
 				.role(UserRole.ROLE_USER)
+				.purchasedBook("")
 				.build();
 			userRepository.save(userAccount);
 			return userAccountToUserProfileDto(userAccount);
@@ -74,10 +82,10 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	@Override
-	public Set<String> getPurchasedBooks(String name) {
+	public Iterable<BookDto> getPurchasedBooks(String name) {
 		UserAccount userAccount = getUserAccount(name);
 		Set<String> books = userAccount.getPurchasedBooks();
-		return books;
+		return books != null ? bookService.findBooksByIsbn(books) : new HashSet<>();
 	}
 
 
@@ -91,6 +99,7 @@ public class AccountServiceImpl implements AccountService{
 		return UserProfileDto.builder()
 				.name(userAccount.getName())
 				.roles(userAccount.getRoles())
+				.purchasedBooks(userAccount.getPurchasedBooks())
 				.build();
 	}
 	

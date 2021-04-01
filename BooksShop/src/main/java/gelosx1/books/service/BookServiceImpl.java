@@ -102,6 +102,23 @@ public class BookServiceImpl implements BookService{
 				.map(this::convertToBookDto)
 				.collect(Collectors.toList());
 	}
-	
-	
+
+	@Override
+	public Iterable<BookDto> findBooksByIsbn(Set<String> isbnSet) {
+		return isbnSet.stream()
+		.map(isbn->bookRepository.findById(isbn).orElse(null))
+		.filter(book->book != null)
+		.map(this::convertToBookDto)
+		.collect(Collectors.toList());
+	}
+
+	@Override
+	public Iterable<BookDto> findAllBooks() {
+		// TODO Auto-generated method stub
+		return bookRepository.findAll()
+		.stream()
+		.map(this::convertToBookDto)
+		.collect(Collectors.toList());
+	}
+		
 }

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import gelosx1.books.accounting.dto.UserProfileDto;
 import gelosx1.books.accounting.dto.UserRegisterDto;
+import gelosx1.books.dto.BookDto;
 
 
 
@@ -17,5 +18,5 @@ public interface AccountService {
 	
 	Set<String> purchaseBook(String name, String isbn);
 	
-	Set<String> getPurchasedBooks(String name);
+	Iterable<BookDto> getPurchasedBooks(String name);
 }

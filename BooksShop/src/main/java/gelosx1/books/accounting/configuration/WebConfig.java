@@ -12,9 +12,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
     	registry.addMapping("/**")
-    	.allowedOrigins("http://localhost:3003")
+    	.allowedOrigins("*")
     	.exposedHeaders("X-Token")
-    	.allowCredentials(true)
+    	//.allowCredentials(true)
     	.allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
     	.allowedHeaders("Authorization", "X-Token", "Content-Type");
     }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import gelosx1.books.accounting.dto.UserProfileDto;
 import gelosx1.books.accounting.dto.UserRegisterDto;
 import gelosx1.books.acounting.service.AccountService;
+import gelosx1.books.dto.BookDto;
 
 
 
@@ -49,7 +50,7 @@ public class UserAccountController {
 	}
 	
 	@GetMapping("/{name}/purchased")
-	public Set<String> getPurchasedBooks(@PathVariable String name) {
+	public Iterable<BookDto> getPurchasedBooks(@PathVariable String name) {
 		return accountService.getPurchasedBooks(name);
 	}
 }

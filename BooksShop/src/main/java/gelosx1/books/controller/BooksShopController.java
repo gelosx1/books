@@ -1,5 +1,7 @@
 package gelosx1.books.controller;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,6 +54,11 @@ public class BooksShopController {
 	@GetMapping("/publisher/{publisher}")
 	public Iterable<BookDto> findBookByPublisher(@PathVariable String publisher) {
 		return bookService.findBooksByPublisher(publisher);
+		
+	}
+	@GetMapping("/all")
+	public Iterable<BookDto> findAllBooks() {
+		return bookService.findAllBooks();
 		
 	}
 

@@ -29,9 +29,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.antMatchers(HttpMethod.GET,"/book/publisher/{publisher}").permitAll()
 			.antMatchers(HttpMethod.POST,"/account/registration").permitAll()
 			.antMatchers(HttpMethod.POST,"/account/login").permitAll()
-			.antMatchers("/book").hasRole("ADMIN")
-			.antMatchers("/book/{isbn}/title/{title}").hasRole("ADMIN")
-			.antMatchers("/book/{isbn}").hasRole("ADMIN")
+			.antMatchers(HttpMethod.GET,"/book/all").permitAll()
+			.antMatchers(HttpMethod.POST,"/book").hasRole("ADMIN")
+			.antMatchers(HttpMethod.PUT,"/book/{isbn}/title/{title}").hasRole("ADMIN")
+			.antMatchers(HttpMethod.DELETE,"/book/{isbn}").hasRole("ADMIN")
             .and()
             .apply(jwtConfigurer);
 
