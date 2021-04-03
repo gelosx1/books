@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import gelosx1.books.accounting.dto.UserProfileDto;
 import gelosx1.books.accounting.dto.UserRegisterDto;
-import gelosx1.books.dto.BookDto;
+import gelosx1.books.dto.PageableBookDto;
 
 
 
@@ -18,5 +18,5 @@ public interface AccountService {
 	
 	Set<String> purchaseBook(String name, String isbn);
 	
-	Iterable<BookDto> getPurchasedBooks(String name);
+	PageableBookDto getPurchasedBooks(String name, Integer currentPage, Integer itemsOnPage);
 }

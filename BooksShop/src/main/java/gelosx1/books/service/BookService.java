@@ -3,6 +3,7 @@ package gelosx1.books.service;
 import java.util.Set;
 
 import gelosx1.books.dto.BookDto;
+import gelosx1.books.dto.PageableBookDto;
 
 public interface BookService {
 	
@@ -14,12 +15,12 @@ public interface BookService {
 	
 	BookDto removeBook(String isbn);
 	
-	Iterable<BookDto> findBooksByAuthor(String authorName);
+	PageableBookDto findBooksByAuthor(String authorName, Integer currentPage, Integer itemsOnPage);
 	
-	Iterable<BookDto> findBooksByPublisher(String publisherName);
+	PageableBookDto findBooksByPublisher(String publisherName, Integer currentPage, Integer itemsOnPage);
 	
-	Iterable<BookDto> findBooksByIsbn(Set<String> isbnSet);
+	PageableBookDto findBooksByIsbn(Set<String> isbnSet, Integer currentPage, Integer itemsOnPage);
 	
-	Iterable<BookDto> findAllBooks();
+	PageableBookDto getAllBooks(Integer currentPage, Integer itemsOnPage);
 
 }

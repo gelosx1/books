@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import gelosx1.books.accounting.dto.UserProfileDto;
 import gelosx1.books.accounting.dto.UserRegisterDto;
 import gelosx1.books.acounting.service.AccountService;
-import gelosx1.books.dto.BookDto;
+import gelosx1.books.dto.PageableBookDto;
 
 
 
@@ -49,9 +48,10 @@ public class UserAccountController {
 		
 	}
 	
-	@GetMapping("/{name}/purchased")
-	public Iterable<BookDto> getPurchasedBooks(@PathVariable String name) {
-		return accountService.getPurchasedBooks(name);
+	@GetMapping("/{name}/purchased/page/{current}/items/{items}")
+	public PageableBookDto getPurchasedBooks(@PathVariable String name,
+			@PathVariable Integer current, @PathVariable Integer items) {
+		return accountService.getPurchasedBooks(name, current, items);
 	}
 }
 	

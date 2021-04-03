@@ -1,7 +1,5 @@
 package gelosx1.books.controller;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gelosx1.books.dto.BookDto;
+import gelosx1.books.dto.PageableBookDto;
 import gelosx1.books.service.BookService;
 
 
@@ -46,19 +45,24 @@ public class BooksShopController {
 		return bookService.removeBook(isbn);
 	}
 	
-	@GetMapping("/author/{author}")
-	public Iterable<BookDto> findBooksByAuthr(@PathVariable String author) {
-		return bookService.findBooksByAuthor(author);
+	@GetMapping("/author/{author}/page/{current}/items/{items}")
+	public PageableBookDto findBooksByAuthor(@PathVariable String author, @PathVariable Integer current,
+			@PathVariable Integer items) {
+		return bookService.findBooksByAuthor(author, current, items);
 		
 	}
-	@GetMapping("/publisher/{publisher}")
-	public Iterable<BookDto> findBookByPublisher(@PathVariable String publisher) {
-		return bookService.findBooksByPublisher(publisher);
+	
+	@GetMapping("/publisher/{publisher}/page/{current}/items/{items}")
+	public PageableBookDto findBookByPublisher(@PathVariable String publisher, @PathVariable Integer current,
+			@PathVariable Integer items) {
+		return bookService.findBooksByPublisher(publisher, current, items);
 		
 	}
-	@GetMapping("/all")
-	public Iterable<BookDto> findAllBooks() {
-		return bookService.findAllBooks();
+	
+	@GetMapping("/all/page/{current}/items/{items}")
+	public PageableBookDto getAllBooks(@PathVariable Integer current,
+			@PathVariable Integer items) {
+		return bookService.getAllBooks(current, items);
 		
 	}
 

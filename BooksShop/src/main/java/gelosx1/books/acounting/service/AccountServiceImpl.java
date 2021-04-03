@@ -1,8 +1,6 @@
 package gelosx1.books.acounting.service;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,7 +18,7 @@ import gelosx1.books.accounting.model.UserAccount;
 import gelosx1.books.accounting.model.UserRole;
 import gelosx1.books.dao.BookRepository;
 import gelosx1.books.dao.UserRepository;
-import gelosx1.books.dto.BookDto;
+import gelosx1.books.dto.PageableBookDto;
 import gelosx1.books.exception.BookNotFoundException;
 import gelosx1.books.exception.UserAuthenticationException;
 import gelosx1.books.exception.UserExistsException;
@@ -82,10 +80,10 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	@Override
-	public Iterable<BookDto> getPurchasedBooks(String name) {
+	public PageableBookDto getPurchasedBooks(String name, Integer currentPage, Integer itemsOnPage) {
 		UserAccount userAccount = getUserAccount(name);
 		Set<String> books = userAccount.getPurchasedBooks();
-		return books != null ? bookService.findBooksByIsbn(books) : new HashSet<>();
+		return bookService.findBooksByIsbn(books, currentPage, itemsOnPage);
 	}
 
 
